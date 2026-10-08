@@ -17,7 +17,7 @@
 #include <iostream>
 #include <map>
 #include <string>
-namespace fs = std::filesystem;
+#include "SDLPort/filesystem.hpp"
 
 const std::string TexturesystemClass::scalefactors_filename("scalefactors.txt");
 

@@ -24,7 +24,7 @@
 #include <cstdio>
 #include <cmath>
 #include <filesystem>
-namespace fs = std::filesystem;
+#include "SDLPort/filesystem.hpp"
 
 #include "DX8Sound.hpp"
 #include "Gameplay.hpp"

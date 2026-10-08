@@ -17,7 +17,7 @@
 #include <cstdio>
 #include <filesystem>
 #include <string>
-namespace fs = std::filesystem;
+#include "SDLPort/filesystem.hpp"
 
 #include "Console.hpp"
 #include "DX8Graphics.hpp"

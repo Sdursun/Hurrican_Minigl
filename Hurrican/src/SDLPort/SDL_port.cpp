@@ -25,7 +25,7 @@
 #include "SDL_port.hpp"
 
 #include <filesystem>
-namespace fs = std::filesystem;
+#include "SDLPort/filesystem.hpp"
 
 #if defined(USE_GL1)
 GLenum MatrixMode = 0;

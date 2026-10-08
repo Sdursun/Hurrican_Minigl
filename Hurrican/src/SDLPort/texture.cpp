@@ -25,7 +25,7 @@
 #include <cstdint>
 #include <cstring>
 #include <filesystem>
-namespace fs = std::filesystem;
+#include "SDLPort/filesystem.hpp"
 
 #include "DX8Graphics.hpp"
 #include "DX8Texture.hpp"
@@ -178,10 +178,13 @@ bool load_texture(image_t &image, GLuint &new_texture) {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
+#if defined(USE_ETC1) || defined(USE_PVRTC)
         if (image.compressed) {
             glCompressedTexImage2D(GL_TEXTURE_2D, 0, image.format, image.w, image.h, 0, image.data.size(),
                                    image.data.data() + image.offset);
-        } else {
+        } else
+#endif
+        {
             glTexImage2D(GL_TEXTURE_2D, 0, image.format, image.w, image.h, 0, image.format, image.type,
                          image.data.data());
         }

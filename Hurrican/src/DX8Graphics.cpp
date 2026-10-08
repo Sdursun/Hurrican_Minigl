@@ -28,6 +28,12 @@
 #if defined(USE_EGL_SDL) || defined(USE_EGL_RAW) || defined(USE_EGL_RPI)
 #include "eglport.hpp"
 #endif
+#if defined(AMIGA_MINIGL)
+#include <png.h>
+#include <cstdio>
+#include <vector>
+#include "SDLPort/filesystem.hpp"
+#endif
 
 // --------------------------------------------------------------------------------------
 // sonstige Variablen
@@ -383,7 +389,9 @@ bool DirectGraphicsClass::SetDeviceInfo() {
     glEnable(GL_BLEND);
 
 #if defined(USE_GL1)
+#if defined(GL_LIGHTING)  // MiniGL has no lighting at all
     glDisable(GL_LIGHTING);                            /* No light */
+#endif
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST); /* Really Nice Perspective Calculations */
     glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 #endif
@@ -479,7 +487,70 @@ bool DirectGraphicsClass::SetDeviceInfo() {
 
 bool DirectGraphicsClass::TakeScreenshot(const char Filename[100], int screenx, int screeny) {
 
-#if SDL_VERSION_ATLEAST(2, 0, 0)
+#if defined(AMIGA_MINIGL)
+    // PROGDIR:screenshots/<name>NNN.png, numbered after the last one there.
+    // The whole screen is read, black borders included, from the buffer
+    // that is about to be shown.
+    const fs::path dir("PROGDIR:screenshots");
+    if (!fs::is_directory(dir)) {
+        BPTR lock = CreateDir(dir.c_str());
+        if (!lock) {
+            Protokoll << "Screenshot: cannot create " << dir.string() << std::endl;
+            return false;
+        }
+        UnLock(lock);
+    }
+
+    std::string stem = fs::path(Filename).stem().string();
+    std::string name;
+    for (int i = 1; i < 1000; i++) {
+        char number[8];
+        snprintf(number, sizeof(number), "%03d", i);
+        name = (dir / (stem + number + ".png")).string();
+        if (!fs::exists(name))
+            break;
+    }
+
+    const int w = WindowView.w;
+    const int h = WindowView.h;
+    std::vector<unsigned char> rgba(static_cast<size_t>(w) * h * 4);
+    glReadPixels(0, 0, w, h, GL_RGBA, GL_UNSIGNED_BYTE, rgba.data());
+
+    FILE *file = fopen(name.c_str(), "wb");
+    if (!file) {
+        Protokoll << "Screenshot: cannot write " << name << std::endl;
+        return false;
+    }
+    png_structp png = png_create_write_struct(PNG_LIBPNG_VER_STRING, nullptr, nullptr, nullptr);
+    png_infop info = png ? png_create_info_struct(png) : nullptr;
+    if (!info || setjmp(png_jmpbuf(png))) {
+        png_destroy_write_struct(&png, &info);
+        fclose(file);
+        Protokoll << "Screenshot: PNG error in " << name << std::endl;
+        return false;
+    }
+    png_init_io(png, file);
+    png_set_IHDR(png, info, w, h, 8, PNG_COLOR_TYPE_RGB, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT,
+                 PNG_FILTER_TYPE_DEFAULT);
+    png_write_info(png, info);
+    std::vector<unsigned char> row(static_cast<size_t>(w) * 3);
+    for (int y = h - 1; y >= 0; y--) {  // GL rows run bottom-up
+        const unsigned char *src = &rgba[static_cast<size_t>(y) * w * 4];
+        for (int x = 0; x < w; x++) {
+            row[x * 3 + 0] = src[x * 4 + 0];
+            row[x * 3 + 1] = src[x * 4 + 1];
+            row[x * 3 + 2] = src[x * 4 + 2];
+        }
+        png_write_row(png, row.data());
+    }
+    png_write_end(png, nullptr);
+    png_destroy_write_struct(&png, &info);
+    fclose(file);
+
+    Protokoll << "Screenshot saved: " << name << std::endl;
+    return true;
+
+#elif SDL_VERSION_ATLEAST(2, 0, 0)
     SDL_Surface *image = SDL_CreateRGBSurface(SDL_SWSURFACE, screenx, screeny, 24, 0x000000FF, 0x0000FF00, 0x00FF0000, 0);
     glReadPixels(0, 0, screenx, screeny, GL_RGB, GL_UNSIGNED_BYTE, image->pixels);
     FlipSurface(image);

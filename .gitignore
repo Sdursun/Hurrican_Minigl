@@ -7,3 +7,6 @@ cmake-build-*
 Savegame*
 Hurrican.cfg
 Hurrican.hsl
+dist-amiga/
+dist-aminet/
+PiStorm3D/

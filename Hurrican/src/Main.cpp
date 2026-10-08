@@ -29,7 +29,7 @@
 #include <filesystem>
 #include <fstream>
 #include <iostream>
-namespace fs = std::filesystem;
+#include "SDLPort/filesystem.hpp"
 
 #include <iomanip>
 #include <SDL.h>
@@ -74,6 +74,8 @@ DirectInputClass DirectInput;        // Input-Objekt
 TimerClass Timer;                    // Timer Klasse für die Framerate
 #if defined(__AROS__)
 Logdatei Protokoll("T:Game_Log.txt");  // Protokoll Datei
+#elif defined(AMIGA_MINIGL)
+Logdatei Protokoll("PROGDIR:Game_Log.txt");  // next to the executable
 #else
 Logdatei Protokoll("Game_Log.txt");  // Protokoll Datei
 #endif
@@ -334,6 +336,32 @@ std::string getXdgDir(const char *xdgVar, const char *fallback) {
     return xdg_ext;
 }
 #endif
+#if defined(AMIGA_MINIGL)
+// AmigaOS starts programs with a 4 KB stack by default; libnix's swapstack
+// module moves us to a bigger one before main() runs
+extern "C" {
+void __stkinit(void);
+void *__stkinit_ref = reinterpret_cast<void *>(__stkinit);
+unsigned long __stack = 512 * 1024;
+}
+
+// Full AmigaDOS path of the executable's directory, e.g. "Work:Games/Hurrican".
+// Paths are built as base + "/sub", which gives native "Work:Games/Hurrican/sub".
+std::string AmigaProgramDir() {
+    char name[512];
+    BPTR lock = GetProgramDir();  // owned by DOS, must not be UnLock()ed
+    if (lock && NameFromLock(lock, name, sizeof(name))) {
+        std::string dir(name);
+        // At a volume root ("Work:") base + "/sub" would mean the parent
+        if (!dir.empty() && dir.back() != ':')
+            return dir;
+        Protokoll << "WARNING: Hurrican is in the root of " << dir
+                  << ", please move it into a drawer (or use -PD / -PS)" << std::endl;
+    }
+    return AMIGA_PROGDIR;
+}
+#endif
+
 // --------------------------------------------------------------------------------------
 // Win-Main Funktion
 // --------------------------------------------------------------------------------------
@@ -361,6 +389,9 @@ int main(int argc, char *argv[]) {
             Protokoll << "\tUsing '.' folder as fallback." << std::endl;
             g_storage_ext = ".";
         }
+#  elif defined(AMIGA_MINIGL)
+        // The executable's own directory, whatever the current directory is
+        g_storage_ext = AmigaProgramDir();
 #  else
         g_storage_ext = ".";
 #  endif
@@ -379,6 +410,9 @@ int main(int argc, char *argv[]) {
 
         // Makefile is specifying this is a UNIX machine and we should write saves, settings, etc to $XDG_DATA_HOME/hurrican/ dir
         g_save_ext = getXdgDir("XDG_DATA_HOME", "/.local/share/hurrican");
+#  elif defined(AMIGA_MINIGL)
+        g_save_ext = AmigaProgramDir();
+        g_config_ext = g_save_ext;
 #  else
         g_save_ext = ".";
         g_config_ext = g_save_ext;
@@ -408,6 +442,7 @@ int main(int argc, char *argv[]) {
                 case SDL_QUIT:
                     GameRunning = false;
                     break;
+#if SDL_VERSION_ATLEAST(2, 0, 0)
                 case SDL_JOYDEVICEADDED:
                 case SDL_JOYDEVICEREMOVED:
                     if (event.type == SDL_JOYDEVICEADDED)
@@ -418,6 +453,7 @@ int main(int argc, char *argv[]) {
                         Protokoll << "\n-> Input Initialization Failure ...!\n";
                     }
                     break;
+#endif
                 default:
                     break;
             }
@@ -497,6 +533,7 @@ bool GameInit() {
     langfilepath.append("/lang");
     FindLanguageFiles(langfilepath.c_str());
 
+#if !defined(AMIGA_MINIGL)  // the Amiga build always knows the executable's directory
     // Try again if needed
     if (LanguageFiles.empty()) {
         langfilepath.assign("./");
@@ -508,6 +545,7 @@ bool GameInit() {
         langfilepath.assign("./lang");
         FindLanguageFiles(langfilepath.c_str());
     }
+#endif
 
     if (LanguageFiles.empty()) {
         Protokoll << "ERROR: Failed to find any language files, aborting." << std::endl;
@@ -908,6 +946,19 @@ bool Heartbeat() {
     Console.DoConsole();
 
 jump:
+
+#if defined(AMIGA_MINIGL)
+    // Screenshot machen: F8 (Amiga keyboards have no F12), once per press,
+    // before the frame is shown
+    static bool ScreenshotKeyHeld = false;
+    if (KeyDown(DIK_F8)) {
+        if (!ScreenshotKeyHeld)
+            DirectGraphics.TakeScreenshot("Hurrican", RENDERWIDTH, RENDERHEIGHT);
+        ScreenshotKeyHeld = true;
+    } else {
+        ScreenshotKeyHeld = false;
+    }
+#endif
 
     DirectGraphics.DisplayBuffer();
 

@@ -9,7 +9,7 @@
 #include <iostream>
 #include <filesystem>
 #include <cstdlib>
-namespace fs = std::filesystem;
+#include "SDLPort/filesystem.hpp"
 
 /**
  * Construct the Logger object and open the logfile

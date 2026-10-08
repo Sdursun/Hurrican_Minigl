@@ -1,7 +1,13 @@
 #ifndef _OPENGL_H_
 #define _OPENGL_H_
 
+#if defined(AMIGA_MINIGL)
+// AmigaOS 68k: GL entry points come from minigl.library (e.g. PiStorm3D),
+// the context is created by SDL 1.2's MiniGL backend
+#include <proto/minigl.h>
+#else
 #include <epoxy/gl.h>
+#endif
 
 // Do some sanity checks
 #if !defined(USE_GL1) && !defined(USE_GL2) && !defined(USE_GL3)

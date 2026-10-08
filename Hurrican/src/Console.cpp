@@ -16,7 +16,7 @@
 #include <string.h>
 #include <string>
 #include <filesystem>
-namespace fs = std::filesystem;
+#include "SDLPort/filesystem.hpp"
 #include "Console.hpp"
 #include "DX8Graphics.hpp"
 #include "Gameplay.hpp"

@@ -1,0 +1,91 @@
+Short:        Turrican-style jump and shoot, MiniGL
+Author:       Poke53280 (Eiswuxe), Amiga port by Serkan DURSUN
+Uploader:     blasterreal@gmail.com (Serkan DURSUN)
+Type:         game/shoot
+Version:      1.0
+Architecture: m68k-amigaos >= 3.0.0
+Requires:     68040/68060 with FPU, RTG, minigl.library 29.1, AHI
+
+Hurrican is a freeware jump and shoot game by Poke53280 (Eiswuxe), made
+in the spirit of Manfred Trenz's Turrican. Blast your way through nine
+levels full of enemies and power-ups; seven user level packs are included.
+
+This is a native AmigaOS 3.x 68k port of the community version from
+https://github.com/HurricanGame/Hurrican, drawn with OpenGL through
+minigl.library.
+
+
+REQUIREMENTS
+------------
+
+ - AmigaOS 3.x, 68040 or 68060 with FPU, plenty of fast RAM
+ - An RTG board (Picasso96 or CyberGraphX) with a 16- or 32-bit mode
+   in 640x480; for 32-bit only BGRA32 modes should be enabled
+ - minigl.library 29.1 in LIBS: (not included), for example:
+     * PiStorm (Raspberry Pi 4 / CM4) with Emu68: PiStorm3D 29.1
+     * WinUAE: QuarkTex NG 1.0 beta 2 or newer
+   The program is built with the minigl.library 29.1 SDK. An older
+   library (29.0 or the V27 betas) refuses it and the game stops
+   without a message after "SDL initialized" in Game_Log.txt.
+ - AHI for sound
+
+
+INSTALLATION
+------------
+
+Unpack the archive anywhere and start Hurrican from its icon or from
+the Shell. Settings, high scores and Game_Log.txt are kept in the
+program's drawer (PROGDIR:).
+
+F8 saves a screenshot as PNG in the screenshots drawer next to the
+program (PROGDIR:screenshots/Hurrican001.png, Hurrican002.png, ...).
+
+Command line options (Hurrican --help lists all of them):
+
+  -W        run in a window on Workbench instead of a screen of its own
+  -D 16     16-bit screen (default 32; -D 24 opens the same 32-bit mode)
+  -L        320x240
+  -TF 2     halve the texture size, for boards with little memory
+  -F        show the frame rate
+
+
+SOURCE
+------
+
+  https://github.com/Sdursun/Hurrican_Minigl
+
+The Amiga build (GCC 16 cross compiler, SDL 1.2 with the minigl.library
+backend, SDL_image, SDL_mixer and libmodplug) is described in
+Hurrican/amiga/README.md there; Hurrican/amiga/build-deps.sh fetches and
+builds every library this program is linked with, including the patches
+applied to them.
+
+
+LICENSES
+--------
+
+ - The game, its graphics, music, sounds and levels: (c) Poke53280. Free
+   to use, modify and pass on, but not to sell (see Docs/README-source.txt
+   and Docs/readme.txt). Commercial use of the assets needs the author's
+   permission.
+ - The Amiga port's own code: MIT license (Docs/LICENSE-port.txt).
+ - Linked libraries, each under its own license (Docs/Licenses/):
+   SDL 1.2 with the minigl.library backend (GNU LGPL 2.1, sources at the
+   address above), SDL_image and SDL_mixer 1.2 (zlib), libmodplug (public
+   domain), libpng, zlib, the minigl.library 29.1 import library (Hyperion
+   MiniGL Open Source License) and glm (MIT).
+
+Hurrican is not affiliated with or endorsed by the authors or rights
+holders of Turrican.
+
+
+CREDITS
+-------
+
+ - Hurrican: Poke53280 (Eiswuxe, Joerg M. Winterstein)
+ - SDL/OpenGL port: Pickle136, Scott R. Smith; further work by Stefan
+   Schmidt (thrimbor), Leandro Nini (drfiemost) and HurricanGame
+ - User levels from turricanforever.de by their authors
+ - SDL 1.2 minigl.library backend and minigl.library: Steffen "MagicSN"
+   Haeuser; PiStorm3D: Dennis Boon
+ - Amiga port: Serkan DURSUN

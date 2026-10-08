@@ -19,7 +19,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
-namespace fs = std::filesystem;
+#include "SDLPort/filesystem.hpp"
 
 #include "Gameplay.hpp"
 #include "GetKeyName.hpp"
@@ -168,6 +168,32 @@ void FindLanguageFiles(const char *path) {
 
     Protokoll << "Searching for language files in " << path << std::endl;
 
+#if defined(AMIGA_MINIGL)
+    // libstdc++ for m68k-amigaos is built without dirent support, so
+    // fs::directory_iterator never yields anything; scan with dos.library
+    BPTR lock = Lock(path, ACCESS_READ);
+    if (!lock) {
+        Protokoll << "Cannot lock " << path << " (IoErr " << IoErr() << ")" << std::endl;
+        return;
+    }
+
+    auto *fib = static_cast<FileInfoBlock *>(AllocDosObject(DOS_FIB, nullptr));
+    if (fib && Examine(lock, fib)) {
+        while (ExNext(lock, fib)) {
+            if (fib->fib_DirEntryType >= 0)  // a drawer
+                continue;
+
+            fs::path name(fib->fib_FileName);
+            if (name.extension() == ".lng") {
+                Protokoll << "Found language file " << name << " in path " << path << std::endl;
+                LanguageFiles.push_back(name.string());
+            }
+        }
+    }
+    if (fib)
+        FreeDosObject(DOS_FIB, fib);
+    UnLock(lock);
+#else
     for (auto &file : fs::directory_iterator(path)) {
         if (!fs::is_regular_file(file)) {
             Protokoll << "File " << file.path().filename() << " is not a regular file, skipping" << std::endl;
@@ -179,6 +205,7 @@ void FindLanguageFiles(const char *path) {
             LanguageFiles.push_back(file.path().filename().string());
         }
     }
+#endif
 }
 
 // DKS - Added function to split a longer line into two shorter lines, for when

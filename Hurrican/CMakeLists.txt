@@ -26,7 +26,9 @@ set(CMAKE_CXX_FLAGS_ASAN
 
 include(CheckIPOSupported)
 check_ipo_supported(RESULT result OUTPUT output)
-if(result)
+if(PLATFORM STREQUAL "AMIGA")
+    message(STATUS "IPO disabled for the AmigaOS 68k cross build")
+elseif(result)
     message(STATUS "IPO supported by compiler, enabled for release builds")
     set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_RELEASE TRUE)
 else()
@@ -430,6 +432,10 @@ elseif(PLATFORM STREQUAL "PANDORA")
     add_definitions(-DPANDORA -DUSE_EGL_RAW -DUSE_PVRTC -DDEFAULT_SCREENBPP=16)
     set(RENDERER "GLES2")
     add_definitions(-DUSE_FAST_TRIG)
+elseif(PLATFORM STREQUAL "AMIGA")
+    # AmigaOS 3.x 68k with SDL 1.2 + minigl.library (PiStorm3D)
+    add_definitions(-DAMIGA_MINIGL)
+    set(RENDERER "GL1")
 endif()
 
 # Default to OpenGL 2
@@ -532,6 +538,21 @@ IF(OPENMPT)
     target_link_libraries(${PROJECT_NAME} openmpt)
 ENDIF(OPENMPT)
 
+if (PLATFORM STREQUAL "AMIGA")
+    # Cross build: SDL 1.2 (MiniGL backend), SDL_image/SDL_mixer and their
+    # codecs are static libraries installed under AMIGA_SDK
+    set(AMIGA_SDK "/opt/amiga/hurrican-sdk" CACHE PATH "Prefix with the 68k SDL/MiniGL libraries")
+    include_directories(${AMIGA_SDK}/include ${AMIGA_SDK}/include/SDL)
+    target_compile_options(${PROJECT_NAME} PRIVATE -include ${CMAKE_SOURCE_DIR}/src/SDLPort/amiga_prelude.hpp)
+    # The minigl.library import library differs between implementations
+    # (e.g. PiStorm3D vs. Classic Warp3D/Wazp3D), the headers do not
+    set(AMIGA_MINIGL_LIB "minigl" CACHE STRING "minigl.library import library: name or full path of libminigl.a")
+    set(AMIGA_OUTPUT_NAME "hurrican" CACHE STRING "File name of the Amiga executable")
+    set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME ${AMIGA_OUTPUT_NAME})
+    target_link_directories(${PROJECT_NAME} PRIVATE ${AMIGA_SDK}/lib)
+    target_link_libraries(${PROJECT_NAME} SDL_mixer SDL_image SDL modplug png z ${AMIGA_MINIGL_LIB} m)
+else()
+
 set(SDL2_BUILDING_LIBRARY TRUE)
 find_package(SDL2)
 if (SDL2_FOUND)
@@ -563,6 +584,8 @@ else()
 
     target_link_libraries(${PROJECT_NAME} ${SDL_LIBRARY} ${SDL_MIXER_LIBRARIES} ${SDL_IMAGE_LIBRARIES})
 endif()
+
+endif() # PLATFORM AMIGA
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9.1)
     target_link_libraries(${PROJECT_NAME} stdc++fs)
