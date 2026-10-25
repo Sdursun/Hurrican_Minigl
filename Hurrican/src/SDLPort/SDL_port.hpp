@@ -52,12 +52,12 @@ using LPDIRECT3DDEVICE8 = std::uint32_t;
 
 class HCOLOR {
 public:
+    // c is 0xAARRGGBB on every CPU: the shifts work on the value, not on
+    // its bytes in memory, so no byte order is involved. (A big-endian
+    // branch here and in D3DCOLOR_RGBA used to agree only with each other,
+    // so plain constants such as 0x24FFFFFF came out wrong on 68k/PPC.)
     inline HCOLOR(std::uint32_t c) {
-#if SDL_BYTEORDER == SDL_LIL_ENDIAN
         this->color = glm::tvec4<std::uint8_t>((c >> 16) & 0xFF, (c >> 8) & 0xFF, c & 0xFF, (c >> 24) & 0xFF);
-#else
-        this->color = glm::tvec4<std::uint8_t>((c >> 8) & 0xFF, (c >> 16) & 0xFF, (c >> 24) & 0xFF, c & 0xFF);
-#endif
     };
     inline HCOLOR() = default;
     friend HCOLOR operator| (HCOLOR lhs, const HCOLOR& rhs) {
@@ -69,11 +69,7 @@ private:
 };
 using D3DCOLOR = HCOLOR;
 
-#if SDL_BYTEORDER == SDL_LIL_ENDIAN
 #define D3DCOLOR_RGBA(r, g, b, a) ((static_cast<std::uint32_t>(a) << 24u) | (static_cast<std::uint32_t>(r) << 16u) | (static_cast<std::uint32_t>(g) << 8u) | static_cast<std::uint32_t>(b))
-#else
-#define D3DCOLOR_RGBA(r, g, b, a) ((static_cast<std::uint32_t>(b) << 24u) | (static_cast<std::uint32_t>(g) << 16u) | (static_cast<std::uint32_t>(r) << 8u) | static_cast<std::uint32_t>(a))
-#endif
 
 #define LPDIRECTINPUTDEVICE8 SDL_Joystick *
 
