@@ -3,8 +3,8 @@
 images, from Hurrican.ico.
 
 The file holds a 4-colour planar image for older Workbenches and an IFF
-FORM ICON with two 256-colour images: the helmet, and the helmet with an
-orange glow for the selected state.
+FORM ICON with two 32-colour images (31 colours and a transparent one):
+the helmet, and the helmet with an orange glow for the selected state.
 
 Usage: make-icon.py <Hurrican.ico> <Hurrican.info>   (needs Pillow)
 """
@@ -13,11 +13,11 @@ import sys
 
 from PIL import Image, ImageChops, ImageFilter
 
-SIZE = 48          # helmet size taken from the .ico
+SIZE = 58          # helmet size, scaled from the .ico's largest image
 PAD = 3            # room for the glow
 W = H = SIZE + 2 * PAD
 STACK = 512 * 1024
-GLOW = (255, 150, 30)
+COLOURS = 32       # per GlowIcon image, the transparent colour included
 
 # Workbench 2.x+ default colours for the classic image
 WB_PALETTE = [(170, 170, 170), (0, 0, 0), (255, 255, 255), (102, 136, 187)]
@@ -33,27 +33,45 @@ def load_helmet(path):
     return canvas
 
 
-def glowing(img):
-    """The image inside an opaque halo, yellow at the outline fading to
-    dark orange outside (GlowIcons have no partial transparency)."""
+# The selected image's halo: GlowIcons have no partial transparency, so it is
+# opaque, in four tones from dark orange outside to yellow at the outline
+GLOW_TONES = [(255, 90, 0), (255, 140, 7), (255, 190, 13), (255, 240, 20)]
+
+
+def glow_tones(img):
+    """Per pixel the index into GLOW_TONES, or -1 outside the halo."""
     alpha = img.getchannel('A').point(lambda a: 255 if a >= 128 else 0)
     halo = alpha.filter(ImageFilter.MaxFilter(2 * PAD + 1)).filter(ImageFilter.GaussianBlur(1.5))
+    return [round((v - 40) / 215 * 3) if v >= 40 else -1 for v in halo.getdata()]
+
+
+def glowing(img):
+    """The image over its halo, as an RGBA image."""
     out = Image.new('RGBA', img.size, (0, 0, 0, 0))
-    px = out.load()
-    for y in range(img.height):
-        for x in range(img.width):
-            v = halo.getpixel((x, y))
-            if v >= 40:
-                t = (v - 40) / 215
-                px[x, y] = (255, int(90 + 150 * t), int(20 * t), 255)
+    out.putdata([GLOW_TONES[t] + (255,) if t >= 0 else (0, 0, 0, 0) for t in glow_tones(img)])
     out.alpha_composite(img)
     return out
 
 
-def quantize(img, colours=255):
-    """Palette image with index 0 transparent and up to 255 colours."""
+def selected_image(img):
+    """The selected GlowIcon image: the helmet in COLOURS - 1 - 4 colours of
+    its own and the halo in the four GLOW_TONES after them, so the glow
+    takes no colours from the helmet."""
+    pixels, palette = quantize(img, COLOURS - 1 - len(GLOW_TONES))
+    base = len(palette)
+    pixels = [p if p else (base + t if t >= 0 else 0) for p, t in zip(pixels, glow_tones(img))]
+    return pixels, palette + GLOW_TONES
+
+
+def quantize(img, colours=COLOURS - 1):
+    """Palette image with index 0 transparent and up to `colours` more."""
     mask = [a >= 128 for a in img.getchannel('A').getdata()]
-    rgb = img.convert('RGB').quantize(colours, method=Image.Quantize.MEDIANCUT)
+    # transparent pixels take the colour of a visible one, so they cost no
+    # palette entry
+    rgb = img.convert('RGB')
+    fill = next(c for c, m in zip(rgb.getdata(), mask) if m)
+    rgb.putdata([c if m else fill for c, m in zip(rgb.getdata(), mask)])
+    rgb = rgb.quantize(colours, method=Image.Quantize.MEDIANCUT)
     pal = rgb.getpalette()[:colours * 3]
     pixels = [(p + 1) if m else 0 for p, m in zip(rgb.getdata(), mask)]
     used = max(pixels) + 1
@@ -175,7 +193,7 @@ def main(src, dst):
     selected = glowing(helmet)
     with open(dst, 'wb') as f:
         f.write(disk_object(helmet, selected))
-        f.write(glow_form([quantize(helmet), quantize(selected)]))
+        f.write(glow_form([quantize(helmet), selected_image(helmet)]))
 
 
 if __name__ == '__main__':
