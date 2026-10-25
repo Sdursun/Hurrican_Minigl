@@ -1,0 +1,260 @@
+--------------------------------
+>    Hurrican Language File    <
+>         - turkce -           <
+>    Poke53280   28.04.2007    <
+>          Turkce ceviri       <
+>     Serkan DURSUN  2026      <
+>                              <
+>    http://www.poke53280.de   <
+--------------------------------
+//---------- Starter ----------//
+Tam ekran
+Standart
+Oyunu baslat
+Cikis
+Iptal
+Dil
+Guncellemeleri denetle
+Yeni bir surum var. Simdi Hurrican web sitesini ziyaret etmek ister misiniz?
+Yeni surum yok.
+Sunucudaki bolumler
+Guncel bolum listesini sunucudan indir
+Bolum paketi sec
+Secilenleri indir
+//---------- Miscellaneous ----------//
+0
+Dil dosyasi yukleniyor
+Bitmap yukleniyor :
+Ses yukleniyor :
+Modul yukleniyor :
+ ... TAMAM
+Bolum verisi yukleniyor: \n
+//---------- Tutorial Texts ----------//
+Hurrican egitim bolumune hos geldin. Burada temel kontrolleri ogreneceksin. KEY_LEFT ve KEY_RIGHT ile sola ve saga gidebilirsin. KEY_CROUCH ile comelebilirsin. Simdi biraz etrafa bak. Bu bolumde bunun gibi baska ipuclari da var.
+Ziplamak icin KEY_JUMP tusuna bas. Tusu ne kadar uzun basili tutarsan o kadar yuksege ziplarsin. Ziplarken KEY_LEFT ve KEY_RIGHT ile yon degistirebilirsin.
+KEY_UP ve KEY_DOWN ile etrafa bakabilirsin. Bu, gizli esyalari bulmana yardim eder. Ornegin hemen ustundeki tavana bir bak...
+Bu elmaslar bolumlerin her yerine dagilmistir. Topladikca puan kazanirsin. Ayrica her 50 elmasta suren yeniden dolar.
+Ates etmek icin KEY_SHOOT tusuna bas, yavas otomatik ates icin basili tut. Tusa art arda basarsan normal otomatik atesten daha hizli ates edersin.
+Simdi sagindaki duvara bak. Pek saglam gorunmuyor. Silahinla ates ederek onu yikmayi dene.
+Cok iyi. Duvarlari yikabilecegin bircok yer var. Gerci arkalarinda genellikle yalnizca gizli alanlar bulursun.
+Simdi biraz nisan calismasi. KEY_UP ile yukari nisan alabilirsin. Bunu KEY_LEFT ya da KEY_RIGHT ile birlestirirsen capraz da ates edebilirsin. Simdi elmaslarin dusmesi icin ustundeki platforma ates etmeyi dene.
+Simdi isler heyecanlaniyor... Asagida ilk dusmanlarla, daha dogrusu ilk ucan guclendirme kutulariyla karsilasacaksin.
+-leer-
+Cok iyi. Simdi tum guclendirmeleri topla.
+Bu efekt silahinin guclendigini gosterir. Efektin rengi hangi silahin guclendigini belirtir. Kirmizi dagitici atis, mavi lazer, yesil ise seken atistir. Cubuklar (okun gosterdigi yer) silahinin su anki seviyesini gosterir.
+Ve simdi ilk gercek dusmanlar - yuruyenler. Onlarla ilgili ozel bir sey de, ustlerine ziplayarak onlari ezebilmendir.
+Yol yine kapali, ama bu sefer yikilabilir duvar ALTINDA. Duvari yikmak icin KEY_BLITZ tusunu basili tut ve simsegi KEY_LEFT ve KEY_RIGHT ile cevir.
+Cok iyi. Bu arada simsek dusmanlari da yok edebilir. Ne yazik ki biraz kisa...  Ama endise etme - ustaca kullanildiginda yine de etkilidir. :) Ayrica sagda bunu duzeltecek birkac guclendirme var.
+Simsek artik daha uzun. Dene! Isin en guzel yani - daha da uzayabilir. Gostergede simsek simgesinin yanindaki cubuk su anki seviyeyi gosterir. Bir can kaybettiginde simsegin bir seviyesini de kaybedersin.
+Ekstralar yalnizca ucan kutularda bulunmaz. Ilk vurulduklarinda ortaya cikan guclendirme bloklarinda da olabilirler. Bir tane bulana kadar buralara ates etmeyi dene (simsegi cevirmek isini biraz kolaylastirir)...
+Iste blok. Simdi bosalana kadar ona art arda ates et ve tum esyalari topla.
+Bunlar "powerline" denen ozel bir silahti. Powerline sayisini gostergede gorebilirsin (okun gosterdigi yere bak). Nasil kullanildiklarini ogrenmek ve onlari is basinda gormek icin biraz saga git.
+Koprunun ortasinda dur ve bir powerline baslatmak icin KEY_POWERLINE tusuna bas.
+Vuuuss! Kucuk dusmanlar silinip gider, buyukler de bu silahtan hasar alir. Simdi ortaya cikan guclendirmeleri topla.
+Bu guclendirmeler el bombasi. GUM diye patlarlar. Komik geliyor ama dogru. :) Bunlari nasil kullanacagini yine sagda ogreneceksin.
+Dikkat, cok hasar kaldirabilen iki yuva var! El bombasi atmak icin KEY_GRANATE tusuna bas. El bombalari patlamanin yakinindaki tum dusmanlara hasar verir. Ikinci yuva icin onun altinda durup yukari ates etmen gerekecek.
+Yine cikmaz yol gibi gorunuyor. Comel (KEY_CROUCH) ve ayni anda powerline'i baslat (KEY_POWERLINE). Jilet tekerine donuseceksin. Tunelin sonunda tekrar ayaga kalkmak icin ziplama tusuna (KEY_JUMP) bas.
+Fark etmissindir, sen dondukce mavi teker gostergesi (okun gosterdigi yere bak) bosalir. Ama onu guclendirmelerle yeniden doldurabilirsin. Ayrica kendi kendine yavasca dolar.
+Bu teker guclendirmesiydi. Teker modundayken yenilmezsin ve dusmanlara hasar verirsin. Bu da yetmezmis gibi KEY_SHOOT ile bomba da birakabilirsin. Sagdaki yuvalarda dene.
+Vay, su an tam bir olum makinesisin! Ama cephanen henuz tamam degil. Daha fazla silah geliyor...
+Bu arada bu oklar, cikisa ulasmak istiyorsan gitmen gereken yonu gosterir.
+Yine mi duvar? Simsegi kullanabiliriz... Ama dur! Duvara yakin dur ve KEY_SHOCKWAVE tusuna bas ...
+Vay, o sok dalgasi tum duvari yikti, yuruyeni oldurdu ve hatta bir guclendirme blogunu bosaltti. Ama bu akilli bombalardan ayni anda yalnizca birini tasiyabilirsin ve kullandiktan sonra ilgili guclendirmeyle yenilemen gerekir. Gostergedeki simge parliyorsa (okun gosterdigi yere bak) akilli bomba kullanima hazirdir.
+Bir nisan alistirmasi daha... Isin silahini doldurmak icin KEY_SHOOT ve KEY_BLITZ tuslarini ayni anda basili tut. Dolarken KEY_LEFT ve KEY_RIGHT ile nisan yonunu degistirebilirsin. Isini atmak icin tuslari birak. Isini ne kadar uzun doldurursan atis o kadar buyuk olur. Ortaya git ve ustundeki elmaslari isinla vurmayi dene.
+Simsegin ne kadar uzunsa isin silahi o kadar hizli dolar. Bir ders daha - solda dagitici atis disindaki diger iki ana silah secenegini ogreneceksin.
+Bunlar seken atis ekstralariydi. Gordugun gibi guclendirmeler boyle ortada da durabilir. Bu atis, silah seviyene gore iki ya da daha fazla atisa bolunebilir. Bunun gibi dar tunel ve koridorlarda cok kullanislidir.
+Bugunun son silahi lazer. Guclendirmeleri topla ve dene. Ozelligi, her mermisinin birden fazla dusmani delip gecerek hepsini yok edebilmesidir. Silahlarin arasinda KEY_WAFFE_CYCLE ile gecis yapabilirsin. Simdi biraz dene.
+Egitimin sonu. Oyunda baska guclendirmeleri ve esyalari da ogreneceksin. Unutma - nasil kullanildigini ogrenmek icin her seyle biraz deneme yap. Bu egitim normal bolumlerden biraz daha kolaydi - yuvalar dusman cikarmadi ve sen yenilmezdin. Ama artik savasa hazir olmalisin. Bol sans!
+36
+37
+38
+39
+//---------- Konsolen Text ----------//
+Hurrican
+
+(c) 2007
+Poke53280
+www.poke53280.de
+
+Konsol komutlari hakkinda bilgi icin "help" yazin
+
+
+//---------- Summary Box ----------//
+Ozet
+Sirlar
+Hile acildi:
+- Bir tusa basin -
+//---------- Main Menu ----------//
+YUKLENIYOR
+OYUNU KAYDET
+OYUNA BASLA
+OYUNA DON
+AYARLAR
+EN IYI SKORLAR
+EMEGI GECENLER
+CIKIS
+EGITIMI OYNA
+YENI OYUN
+KAYITLI OYUNA DEVAM
+KOLAY
+NORMAL
+ZOR
+HURRICAN
+imlec: sec - enter: onayla - ESC: geri
+SIRA
+ISIM
+SKOR
+BOLUM
+ZORLUK
+SES DUZEYI
+EFEKTLER
+MUZIK
+KONTROLLERI AYARLA
+DIL SECIMI
+MOD:
+Titresim
+Varsayilan ayarlari yukle
+Joypad
+Joystick
+INANILMAZ
+YENI REKOR SIRASI
+ADINI GIR
+DEVAM
+Geri
+sola yuru
+saga yuru
+comel
+yukari bak
+asagi bak
+zipla
+ates et
+simsegi ac
+powerline
+el bombasi
+sok dalgasi
+silah degistir
+yuru
+bak
+X/Y ekseni
+Yon tusu
+-yeni tusa basin-
+-yeni dugmeye basin-
+DETAY: DUSUK
+DETAY: ORTA
+DETAY: YUKSEK
+DETAY: EN YUKSEK
+TEK OYUNCU
+IKI OYUNCU
+Birinci oyuncu
+Ikinci oyuncu
+tur
+mod
+Hassasiyet
+klavye
+tanimsiz
+bolum
+oyuncu
+tarih
+- kayit yok -
+GIZLI
+sol
+sag
+yukari
+asagi
+dugme
+//---------- Hints ----------//
+Bir bolumdeki tum elmaslari toplarsan bir hile kodu acilir.
+Bir can kaybettiginde kullandigin silahin seviyesi duser.
+Teker modundayken bir dusmana dokunmak teker enerjini daha hizli azaltir.
+Hareketsiz durdugunda teker enerjin daha hizli dolar.
+Teker modunda havadayken ziplamaya basarsan teker ziplamasi yaparsin.
+50 elmas toplamak sureyi yeniden doldurur.
+En fazla 9 el bombasi ve 9 powerline tasiyabilirsin.
+Bazi sirlar yikilabilir duvarlarin arkasinda saklidir.
+Arkasinda sir bulabilecegin sahte duvarlar vardir.
+Teker modundayken patlayan bir bombanin ustunden gecersen biraz yukari firlarsin.
+Bir balik seni isirirsa birakmasi icin karaya zipla.
+Buhar ve duman ziplamalarini biraz yukseltir.
+Bazi boss'lari yalnizca ates gucuyle yenmek cok zordur.
+Duvar alev puskurtuculerinin atesi dusmanlara da zarar verebilir.
+Kalkan yayici dokundugu tum dusmanlara hasar verir.
+Bazi dusmanlardan kacmak onlari yok etmekten iyidir.
+El bombalari patlamanin cevresindeki her dusmana hasar verir.
+Gizli guclendirme bloklarini bulmanin en iyi yolu powerline'dir.
+Seken atisin hasari her duvardan sekiste azalir.
+Ates tusuna art arda basarsan normal otomatik atesten daha hizli ates edersin.
+Daha yuksek yerlere ulasmak icin guclendirme bloklarinin ustune ziplayabilirsin.
+Her bolumden sonra oyununu kaydedebilirsin.
+Simsegin ne kadar uzunsa isin silahi o kadar hizli dolar.
+Bir can kaybettiginde patlama bir el bombasi gibi etki eder.
+Lazer silahi birden fazla dusmani delip gecebilir.
+Ana silahlar dagitici atis, lazer ve seken atis 8. seviyeye kadar guclendirilebilir.
+Her bolumden sonra oyununu kaydedebilirsin.
+Ozel efektlerin detay seviyesini ayarlar menusunden degistirebilirsin.
+Bazi dusmanlar yalnizca belirli durumlarda yaralanabilir.
+Poke53280 senden ASLA e-posta adresini ya da sifreni istemez...
+//---------- Pissen ----------//
+Lanet olsun, bir yere gitmem lazim...
+Off! Artik tutamiyorum!
+Bu teneke kutunun neden bir cis kapagi yok???
+Bu seyi hangi akilli tasarladi?
+Neden kimse boyle bir durumu dusunmedi?
+Tam da beklendigi gibi...
+Bu seyi dogru durust test etmemisler...
+Lanet olsun, isler epey zorlasiyor!
+Dunya'ya dondugumde...
+.. bunu sikayet edecegim!
+Bu imkansiz.
+Bu saldiri zirhinda her turlu teknik incelik var...
+Ama en onemli seyi unutmuslar.
+Simdi ne yapabilirim?
+Hadi, oynamaya devam et!
+Grmblfxt... Delirecegim.
+Tutmaliyim...
+.. oyun bitene kadar!
+//---------- Intro Screen 1 ----------//
+2138, uzayda bir yerde...
+"Dreadnought" basarili bir gorevden donuyor.
+Geminin bir sonraki duragi Dunya.
+Murettebat birden Mavi Gezegen'den bir imdat cagrisi alir.
+"Dunya saldiri altinda! Tum birlikler savunmaya hazirlansin!"
+"Kokeni bilinmeyen roketler gezegenin yuzeyini vurdu!"
+Saniyeler sonra olumcul fuzelerin nereden geldigi anlasilir.
+Takatis gezegeninden gelmektedirler.
+Brifing odasindaki hologramla karsilasan adamlar gozlerine inanamaz.
+Saldiriyi baslatan Dr. Geng X'in ta kendisidir.
+Yillar once oldugu haberi galaksiye yayilmisti, ama simdi geri dondu.
+"Dreadnought" hic duraksamadan rotasini kesfedilmemis gezegene cevirir.
+Kisa bir ucusun ardindan gemi hedefine ulasir.
+Yabanci gezegen aldatici bir guzellikle parlar.
+Murettebat inis islemini baslatir.
+Tarayicilar Dunya benzeri bir atmosfer gosterir.
+Birden gezegen yuzeyindeki sayisiz top ates acar.
+Kalkan sistemi cokuyor ve dev mermiler geminin govdesini parcaliyor.
+Caresiz askerler gezegenin yuzeyine dogru dusuyor.
+Atmosfere girdiklerinde gemileri parcalanmaya baslar.
+Carpmadan saniyeler sonra..
+Murettebatin cogu "Dreadnought"un zorunlu inisinden sag kurtulamaz.
+Yalnizca bir asker hayattadir. Yavasca dogrulur ve disariya dogru ilerler..
+Yalnizca iki asker hayattadir. Yavasca dogrulurlar ve disariya dogru ilerlerler..
+..Dr. Geng X'i bulup dunyayi onun kotu varligindan kurtarmaya kararli.
+//---------- Outtro ----------//
+Hayal bile edilemeyen basarildi!
+Uzun suren bir savasin ardindan Dr. Geng X yenildi.
+Ondan geriye kalanlar, yikilmis kalesinin tuten enkazinin
+altinda gizli. Tum karanlik yaratimlari onunla birlikte burada,
+sonsuz karanligin derinliklerine gomuldu.
+Evrene yeniden baris geldi, ama kimse bu barisin
+ne kadar surecegini bilmiyor...
+Gelecek henuz yazilmadi.
+
+
+
+//---------- Warpzone ----------//
+Ve simdi, aranizdaki yigitler icin kucuk bir ipucu:
+Gizli tesisatci girisini bulmak icin
+egitim bolumune yakindan bakin...
+Hemen en basta tekerle bir PATLAMA yasayin...
+Sola yakin durun ve unutmayin - tesisatcilar borulara bayilir ;)
+
+//--- ENDE ---//
