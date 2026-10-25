@@ -72,9 +72,11 @@ clone SDL1 https://github.com/SteffenHaeuser/SDL1_MiniGL_Library.git
     # with depth 24 and chosen by SA_DisplayID. With 32 OpenScreenTags fails
     # and SDL falls back to a window on Workbench ("Screen cant open")
     sed -i 's/SA_Depth,bpp,/SA_Depth,(bpp > 24 ? 24 : bpp),/' video/amigaos/SDL_cgxvideo.c
-    # The lowlevel.library joystick driver had no hat and +-257 axes, so the
-    # player never moved with a pad (see the script)
-    python3 "$HERE/patch-sdl1-joystick.py" joystick/SDL_sysjoystick.c
+    # Our joystick driver: lowlevel.library with a hat and +-32767 axes (the
+    # original's +-257 never moved Hurrican's player), and Xbox 360 pads
+    # through xbox360w.class (see the file)
+    cp "$HERE"/joystick/sdl1/SDL_sysjoystick.c "$HERE"/joystick/amiga_xbox360w.h \
+       "$HERE"/joystick/xbox360w.h joystick/
     make -f Makefile.cross static-libnix CC="$CC" AR="$AR" \
         GCCFLAGS="$OPT -fpermissive -I. -I./inc -I./include -I./include/SDL -I$SDK/include -mhard-float -mcpu=68040"
 )

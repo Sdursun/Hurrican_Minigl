@@ -572,9 +572,46 @@ void ShakeScreen(float staerke) {
 // Default Config erstellen
 // --------------------------------------------------------------------------------------
 // DKS - New function that creates a per-player default controls configuration
+// Xbox 360 pad profile (XInput button order, see DirectJoystickClass::IsXbox):
+// A jumps, X shoots, B lightning, Y powerline, RB grenade, LB shockwave,
+// Back cycles the weapons, Start opens the menu; D-pad or left stick walk
+static void ApplyXboxControlsProfile(PlayerClass &p) {
+    enum { XB_A, XB_B, XB_X, XB_Y, XB_LB, XB_RB, XB_BACK };
+
+    for (int &button : p.AktionJoystick)
+        button = -1;
+    p.AktionJoystick[AKTION_JUMP] = XB_A;
+    p.AktionJoystick[AKTION_SHOOT] = XB_X;
+    p.AktionJoystick[AKTION_BLITZ] = XB_B;
+    p.AktionJoystick[AKTION_POWERLINE] = XB_Y;
+    p.AktionJoystick[AKTION_GRANATE] = XB_RB;
+    p.AktionJoystick[AKTION_SMARTBOMB] = XB_LB;
+    p.AktionJoystick[AKTION_WAFFEN_CYCLE] = XB_BACK;
+    p.Walk_UseAxxis = false;
+    p.Look_UseAxxis = false;
+    p.JoystickMode = JOYMODE_JOYPAD;
+    p.ControlType = CONTROLTYPE_JOY;
+}
+
+static void CreateDefaultControlsConfigFor(int player);
+
 void CreateDefaultControlsConfig(int player) {
     if (player < 0 || player > 1)
         return;
+
+    CreateDefaultControlsConfigFor(player);
+
+    // A connected Xbox pad gets its own profile and becomes the player's
+    // control
+    PlayerClass &p = Player[player];
+    if (p.JoystickIndex >= 0 && p.JoystickIndex < DirectInput.JoysticksFound &&
+        DirectInput.Joysticks[p.JoystickIndex].IsXbox()) {
+        Protokoll << "Player " << player + 1 << ": Xbox controller profile" << std::endl;
+        ApplyXboxControlsProfile(p);
+    }
+}
+
+static void CreateDefaultControlsConfigFor(int player) {
 
     if (player == 0) {
         Player[0].AktionKeyboard[AKTION_LINKS] = DIK_LEFT;

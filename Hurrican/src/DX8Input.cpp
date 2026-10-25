@@ -246,6 +246,12 @@ char *DirectInputClass::MapButtonToString(int joy_idx, int button) {
             return InternalButtonNumToStringMap[button];
         } else
 #endif  // GCW
+        if (joy_idx >= 0 && joy_idx < JoysticksFound && Joysticks[joy_idx].IsXbox()) {
+            static const char *const xbox_names[] = {"A",  "B",  "X",  "Y",     "LB", "RB", "Back",
+                                                     "Start", "LS", "RS", "Guide", "LT", "RT"};
+            if (button < static_cast<int>(sizeof(xbox_names) / sizeof(xbox_names[0])))
+                return const_cast<char *>(xbox_names[button]);
+        }
         // Non-platform-specific generic code for all joysticks:
         {
             // Report button numbers as ranging from 1..99 instead of 0..98

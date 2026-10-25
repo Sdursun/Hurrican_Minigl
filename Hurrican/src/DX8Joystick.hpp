@@ -78,6 +78,11 @@ class DirectJoystickClass {
 
     int GetNumButtons() const { return TotalButtons; }
 
+    // An Xbox 360 pad, as the Amiga's xbox360w.class driver reports it (or
+    // any SDL joystick of that name): buttons in XInput order, A B X Y LB
+    // RB Back Start LS RS Guide LT RT
+    bool IsXbox() const { return Active && JoystickName.find("Xbox") != std::string::npos; }
+
     int GetMainMenuButton() const { return startButton; }
 
     // DKS-Added these three for better joystick support, esp in menus
