@@ -44,6 +44,7 @@
 #include <proto/dos.h>
 #include <proto/lowlevel.h>
 
+#include "SDL_events.h"
 #include "SDL_joystick.h"
 #include "../SDL_sysjoystick.h"
 #include "../SDL_joystick_c.h"
