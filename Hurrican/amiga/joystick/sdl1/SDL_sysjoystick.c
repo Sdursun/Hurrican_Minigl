@@ -28,9 +28,10 @@
  * - directions are reported as axes 0/1 with +-32767 and as hat 0 (they
  *   were two axes of +-257 and no hat, so Hurrican's player did not move);
  *   a mouse in the port no longer gives directions
- * - a port that xbox360w.class has a pad mapped to is opened as an
- *   "Xbox 360 Controller" with 13 buttons, 6 axes and a hat, read from the
- *   class's public state (amiga_xbox360w.h)
+ * - when xbox360w.class runs, its first two pads are joysticks 2 and 3,
+ *   "Xbox 360 Controller 1/2", with 13 buttons, 6 axes and a hat, read
+ *   from the class's public state (amiga_xbox360w.h); joysticks 0 and 1
+ *   stay the two ports
  */
 
 #include <stdio.h>		/* For the definition of NULL */
@@ -75,6 +76,9 @@ struct joystick_hwdata
 	int xbox;		/* read through xbox360w.class */
 };
 
+#define NUMPORTS 2
+static int numxbox;		/* Xbox pads listed after the ports */
+
 /* SDL joystick 0 is the Amiga's joystick port (lowlevel port 1), 1 the
    mouse port (lowlevel port 0) */
 static ULONG port_of(int index)
@@ -86,18 +90,19 @@ int SDL_SYS_JoystickInit(void)
 {
 	if(!LowLevelBase)
 		LowLevelBase=OpenLibrary("lowlevel.library",37);
-	return LowLevelBase ? 2 : 0;
+	if(!LowLevelBase)
+		return 0;
+	numxbox = axb_read(0,NULL) ? AXB_NUMPADS : 0;
+	return NUMPORTS+numxbox;
 }
 
 /* Function to get the device-dependent name of a joystick */
 const char *SDL_SYS_JoystickName(int index)
 {
-	if(index<2&&LowLevelBase)
-	{
-		if(axb_read(port_of(index),NULL))
-			return AXB_NAME;
+	if(index<NUMPORTS&&LowLevelBase)
 		return index == 1 ? "Port 1 Amiga Joystick/Joypad" : "Port 2 Amiga Joystick/Joypad";
-	}
+	if(index<NUMPORTS+numxbox)
+		return axb_names[index-NUMPORTS];
 
 	SDL_SetError("No joystick available with that index");
 	return(NULL);
@@ -115,7 +120,7 @@ int SDL_SYS_JoystickOpen(SDL_Joystick *joystick)
 	joystick->nballs=0;
 	joystick->nhats=1;
 
-	if((joystick->hwdata->xbox=axb_read(port,NULL)))
+	if((joystick->hwdata->xbox=(joystick->index>=NUMPORTS)))
 	{
 		joystick->nbuttons=AXB_NUMBUTTONS;
 		joystick->naxes=AXB_NUMAXES;
@@ -155,7 +160,7 @@ static void update_xbox(SDL_Joystick *joystick)
 	ULONG old=joystick->hwdata->joystate;
 	int i;
 
-	if(!axb_read(port_of(joystick->index),&st))
+	if(!axb_read(joystick->index-NUMPORTS,&st))
 		st.connected=0;
 	if(!st.connected)
 	{
@@ -182,13 +187,13 @@ void SDL_SYS_JoystickUpdate(SDL_Joystick *joystick)
 	ULONG data;
 	int i;
 
-	if(joystick->index>=2)
-		return;
 	if(joystick->hwdata->xbox)
 	{
 		update_xbox(joystick);
 		return;
 	}
+	if(joystick->index>=NUMPORTS)
+		return;
 
 	data=ReadJoyPort(port_of(joystick->index));
 	{

@@ -11,8 +11,9 @@
   - a joystick or CD32 pad: directions as axes 0/1 (+-32767) and hat 0,
     buttons red, blue, play, yellow, green, forward, reverse (three for a
     plain joystick); a mouse in the port gives no directions
-  - a port that xbox360w.class has a pad mapped to: an "Xbox 360
-    Controller" with 13 buttons, 6 axes and a hat (amiga_xbox360w.h)
+  - when xbox360w.class runs, its first two pads are joysticks 2 and 3,
+    "Xbox 360 Controller 1/2", with 13 buttons, 6 axes and a hat
+    (amiga_xbox360w.h)
 
   Simple DirectMedia Layer
   Copyright (C) 1997-2024 Sam Lantinga <slouken@libsdl.org>
@@ -55,7 +56,8 @@
 
 struct Library *LowLevelBase = NULL;
 
-static SDL_JoystickID os3_instance[OS3_NUMPORTS];
+static int os3_count;           /* the ports, then the Xbox pads */
+static SDL_JoystickID os3_instance[OS3_NUMPORTS + AXB_NUMPADS];
 
 static const ULONG os3_joybut[7] = {
     JPF_BUTTON_RED, JPF_BUTTON_BLUE, JPF_BUTTON_PLAY, JPF_BUTTON_YELLOW,
@@ -64,7 +66,7 @@ static const ULONG os3_joybut[7] = {
 
 struct joystick_hwdata {
     ULONG port;
-    int xbox;
+    int xbox;                   /* Xbox pad slot + 1, 0 for a port */
 };
 
 static ULONG port_of(int index)
@@ -82,7 +84,8 @@ static int OS3_JoystickInit(void)
     if (!LowLevelBase) {
         return 0;   /* no joysticks, not an error */
     }
-    for (i = 0; i < OS3_NUMPORTS; i++) {
+    os3_count = OS3_NUMPORTS + (axb_read(0, NULL) ? AXB_NUMPADS : 0);
+    for (i = 0; i < os3_count; i++) {
         os3_instance[i] = SDL_GetNextJoystickInstanceID();
         SDL_PrivateJoystickAdded(os3_instance[i]);
     }
@@ -91,7 +94,7 @@ static int OS3_JoystickInit(void)
 
 static int OS3_JoystickGetCount(void)
 {
-    return LowLevelBase ? OS3_NUMPORTS : 0;
+    return LowLevelBase ? os3_count : 0;
 }
 
 static void OS3_JoystickDetect(void)
@@ -100,8 +103,8 @@ static void OS3_JoystickDetect(void)
 
 static const char *OS3_JoystickGetDeviceName(int index)
 {
-    if (axb_read(port_of(index), NULL)) {
-        return AXB_NAME;
+    if (index >= OS3_NUMPORTS) {
+        return axb_names[index - OS3_NUMPORTS];
     }
     return index == 1 ? "Port 1 Amiga Joystick/Joypad" : "Port 2 Amiga Joystick/Joypad";
 }
@@ -149,7 +152,8 @@ static int OS3_JoystickOpen(SDL_Joystick *joy, int index)
     joy->hwdata = hw;
     joy->nhats = 1;
 
-    if ((hw->xbox = axb_read(hw->port, NULL))) {
+    if (index >= OS3_NUMPORTS) {
+        hw->xbox = index - OS3_NUMPORTS + 1;
         joy->nbuttons = AXB_NUMBUTTONS;
         joy->naxes = AXB_NUMAXES;
         return 0;
@@ -219,7 +223,7 @@ static void OS3_JoystickUpdate(SDL_Joystick *joy)
     if (hw->xbox) {
         struct axb_state st;
 
-        if (!axb_read(hw->port, &st) || !st.connected) {
+        if (!axb_read(hw->xbox - 1, &st) || !st.connected) {
             SDL_zero(st);
         }
         for (i = 0; i < AXB_NUMAXES; i++) {

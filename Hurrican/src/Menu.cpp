@@ -1731,6 +1731,9 @@ void MenuClass::DoMenu() {
                         if (AktuellerPunkt == MENU_TASTEN_TYPE_LINE) {
                             // Joytick dran?
                             if (JoystickFound == true) {
+                                bool const was_xbox = pCurrentPlayer2->ControlType == CONTROLTYPE_JOY &&
+                                                      DirectInput.Joysticks[pCurrentPlayer2->JoystickIndex].IsXbox();
+
                                 // Von Keyboard auf Joystick wechseln?
                                 if (pCurrentPlayer2->ControlType == CONTROLTYPE_KEYBOARD) {
                                     pCurrentPlayer2->ControlType = CONTROLTYPE_JOY;
@@ -1746,6 +1749,12 @@ void MenuClass::DoMenu() {
                                         pCurrentPlayer2->JoystickIndex = 0;
                                     }
                                 }
+
+                                // The buttons follow the new joystick: the Xbox profile for an
+                                // Xbox pad, buttons 1..7 when going from it to a port joystick
+                                if (pCurrentPlayer2->ControlType == CONTROLTYPE_JOY &&
+                                    (was_xbox || DirectInput.Joysticks[pCurrentPlayer2->JoystickIndex].IsXbox()))
+                                    ApplyJoystickButtonDefaults(*pCurrentPlayer2);
                             }
                         }
                     }

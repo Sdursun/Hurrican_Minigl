@@ -42,6 +42,8 @@ void SummaryScreen();                      // Zusammenfassung des Levels
 bool LoadConfig();                         // Konfigurationen laden
 void SaveConfig();                         // Konfigurationen speichern
 void CreateDefaultControlsConfig(int player);  // Load per-player default controls configuration
+class PlayerClass;
+void ApplyJoystickButtonDefaults(PlayerClass &p);  // Default buttons for the player's joystick (Xbox profile)
 void CreateDefaultConfig();                // DefaultKonfigurationen erstellen
 bool DisplayLoadInfo(const char Text[100]);    // Text beim Loading anzeigen
 bool NewDemo(const char Filename[]);           // Neues Demo aufzeichnen
