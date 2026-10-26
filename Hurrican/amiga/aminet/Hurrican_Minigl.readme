@@ -3,6 +3,7 @@ Author:       Poke53280 (Eiswuxe), Amiga port by Serkan DURSUN
 Uploader:     blasterreal@gmail.com (Serkan DURSUN)
 Type:         game/shoot
 Version:      1.1
+Replaces:     game/shoot/Hurrican_Minigl.lha
 Architecture: m68k-amigaos >= 3.0.0
 Requires:     68040/68060 with FPU, RTG, minigl.library 29.1, AHI
 
