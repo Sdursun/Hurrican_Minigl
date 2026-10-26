@@ -2,7 +2,7 @@ Short:        Turrican-style jump and shoot, MiniGL
 Author:       Poke53280 (Eiswuxe), Amiga port by Serkan DURSUN
 Uploader:     blasterreal@gmail.com (Serkan DURSUN)
 Type:         game/shoot
-Version:      1.0
+Version:      1.1
 Architecture: m68k-amigaos >= 3.0.0
 Requires:     68040/68060 with FPU, RTG, minigl.library 29.1, AHI
 
@@ -48,6 +48,24 @@ Command line options (Hurrican --help lists all of them):
   -TF 2     halve the texture size, for boards with little memory
   -F        show the frame rate
 
+Languages: English, German, French, Spanish, Italian, Polish,
+Portuguese, Swedish and Turkish (Preferences, Choose language).
+
+
+CONTROLS
+--------
+
+Preferences, Configure controls, "type" chooses the keyboard, the
+joystick or CD32 pad in either Amiga port (through lowlevel.library) or
+an Xbox 360 pad.
+
+Xbox 360 pads: with xbox360w.class running (Poseidon, Xbox 360 Wireless
+Receiver), its pads 1 and 2 are listed as "Xbox 360 Controller 1" and
+"... 2". Choosing one sets its own buttons: A jump, X shoot, B lightning,
+Y powerline, RB grenade, LB shockwave, Back next weapon, Start menu; the
+D-pad or the left stick walk. The buttons are shown by their names and
+can be changed as usual.
+
 
 SOURCE
 ------
@@ -77,6 +95,19 @@ LICENSES
 
 Hurrican is not affiliated with or endorsed by the authors or rights
 holders of Turrican.
+
+
+HISTORY
+-------
+
+1.1  - Xbox 360 pads through xbox360w.class, with their own buttons
+     - joysticks and CD32 pads move the player (only the buttons worked)
+     - Turkish language
+     - colours given as plain values were wrong on the 68k: the menus'
+       highlight bar was an opaque yellow that hid its text, the
+       cracktro's scroll texts were missing
+     - new 64x64 icon with 32 colours
+1.0  - first release
 
 
 CREDITS
