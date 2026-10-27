@@ -2,10 +2,14 @@ MIT License
 
 Copyright (c) 2026 Serkan DURSUN
 
-This license covers the AmigaOS / MiniGL port of Hurrican: the files in
-Hurrican/amiga/ and Hurrican/cmake/, Hurrican/src/SDLPort/amiga_prelude.hpp,
-Hurrican/src/SDLPort/filesystem.hpp, and the Amiga-specific changes to the
-other source files. The rest of Hurrican keeps its own terms: the original
+This license covers the AmigaOS ports of Hurrican (minigl.library and
+ogles2.library): the files in Hurrican/amiga/ and Hurrican/cmake/,
+Hurrican/src/SDLPort/amiga_prelude.hpp, Hurrican/src/SDLPort/filesystem.hpp,
+and the Amiga-specific changes to the other source files. Except for the
+two SDL joystick drivers in Hurrican/amiga/joystick/, which keep their
+SDL's license: sdl1/SDL_sysjoystick.c (derived from SDL 1.2, GNU LGPL 2.1)
+and sdl2/SDL_sysjoystick.c (zlib, as SDL2). The rest of Hurrican keeps its
+own terms: the original
 source and the game's graphics, music, sounds and levels by Poke53280
 (Eiswuxe) may be used freely but not sold (see README.txt), and the files of
 later contributors carry their own notices.
