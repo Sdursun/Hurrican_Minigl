@@ -80,3 +80,33 @@ To see the available command line options use the `--help` argument
     ./build/hurrican --help
 
 or check online at https://github.com/HurricanGame/Hurrican/wiki/Help
+
+---
+
+### Credits and thanks
+
+**Hurrican** was created by **Jörg M. Winterstein (Eiswuxe)** and the team of
+**Poke53280**, and released as freeware in 2007
+([winterworks](https://www.winterworks.de/project/hurrican/)). Many thanks for
+the game, and for releasing its source code and assets so that it can be
+ported to platforms like the Amiga.
+
+- Graphics: Thomas "Turri" Schreiter
+- Additional level design: T.R. Schmidt and Gerhard "Schlauchi" Weihrauch
+- SDL/OpenGL port: Pickle136 and Scott R. Smith
+- Further work: Stefan Schmidt ([thrimbor](https://github.com/thrimbor/Hurrican)),
+  Leandro Nini ([drfiemost](https://github.com/drfiemost/Hurrican)) and the
+  [HurricanGame](https://github.com/HurricanGame/Hurrican) contributors
+- User levels from [turricanforever.de](http://turricanforever.de) by their authors
+- Hurrican is inspired by Manfred Trenz's Turrican; it is not affiliated with or
+  endorsed by Turrican's authors or rights holders
+
+The AmigaOS port builds on the work of:
+
+- Steffen "MagicSN" Haeuser: minigl.library and SDL 1.2 with its minigl.library backend
+- Dennis van der Boon: PiStorm3D, the VideoCore V3D backend
+- Claude Schwarz, Michal Schulz and the PiStorm and Emu68 projects
+- The authors of SDL, SDL_image, SDL_mixer, libmodplug, zlib, libpng and glm
+- bebbo and the AmigaPorts m68k-amigaos-gcc toolchain
+
+AmigaOS port: Serkan DURSUN
